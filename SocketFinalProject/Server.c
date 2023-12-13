@@ -9,9 +9,14 @@ struct sockaddr_in nextUser();
 int exitUser(int port);
 int getUserList(char buf[]);
 
+// 랜덤 단어
+char randSpell[10][10] = { "물고기", "기차", "하늘", "눈사람", "하늘", "컴퓨터", "음악", "도서관", "여행", "책상"};
+
 int main(int argc, char* argv[])
 {
 	int result;
+
+	srand(time(NULL)); //랜덤 초기화
 
 	// 윈속 초기화
 	WSADATA wsa;
@@ -69,11 +74,15 @@ int main(int argc, char* argv[])
 			// 유저목록 조회 및 리턴
 			if (getUserList(conbuf)) {
 				sprintf(listbuf, "user-%s", conbuf);
-				result = sendto(sock, listbuf, (int)strlen(listbuf), 0, (struct sockaddr*)&clnt_addr, sizeof(clnt_addr));
-				if (result == SOCKET_ERROR) {
-					err_display("sendto()");
-					break;
-				}
+			} else {
+				int randint = rand() % 9;
+				sprintf(listbuf, "next-%s-%d", randSpell[randint], ntohs(clnt_addr.sin_port));
+			}
+
+			result = sendto(sock, listbuf, (int)strlen(listbuf), 0, (struct sockaddr*)&clnt_addr, sizeof(clnt_addr));
+			if (result == SOCKET_ERROR) {
+				err_display("sendto()");
+				break;
 			}
 
 			// 모든 유저에게 메시지 보내기
@@ -104,8 +113,9 @@ int main(int argc, char* argv[])
 			if (exitUser(atoi(data))){
 				struct sockaddr_in next = nextUser();
 
+				int randint = rand() % 9;
 				// next-단어-입력할유저포트
-				sprintf(buf, "next-사과-%d", ntohs(next.sin_port));
+				sprintf(buf, "next-%s-%d", randSpell[randint], ntohs(next.sin_port));
 
 				// 모든 유저에게 메시지 보내기
 				pushAllUser(buf, &sock);
