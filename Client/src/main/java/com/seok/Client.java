@@ -9,7 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 
 public class Client {
@@ -33,6 +35,7 @@ public class Client {
         frame = new JFrame("끝말잇기 하실래요?");
         frame.setSize(700, 500); // (프레임크기-객체크기)*
         frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
         frame.setFocusable(true);
         frame.setLayout(null);
         new Client().startApp();
@@ -61,17 +64,19 @@ public class Client {
 
         listView = new JList<>(playerList);
         listView.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-        listView.setBounds(frameWidth - 120, 40, 120, frameHeight - 110);
+        listView.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scrollView = new JScrollPane(listView);
+        scrollView.setBounds(frameWidth - 120, 40, 120, frameHeight - 110);
 
         state = new JLabel();
         state.setHorizontalAlignment(JLabel.CENTER);
         state.setOpaque(true);
         state.setFont(new Font("맑은 고딕", Font.PLAIN, 17));
-        state.setBounds(0, 60, frameWidth - listView.getWidth(), 20);
+        state.setBounds(0, 60, frameWidth-scrollView.getWidth() , 20);
 
         spelling = new JLabel("연결하기를 눌러 게임시작", JLabel.CENTER);
         spelling.setFont(new Font("맑은 고딕", Font.PLAIN, 30));
-        spelling.setBounds(0, frameHeight / 2 - 40, frameWidth - listView.getWidth(), 30);
+        spelling.setBounds(0, frameHeight / 2 - 40, frameWidth - scrollView.getWidth(), 30);
 
         JLabel ipAddrLable = new JLabel("연결할 ip주소:", JLabel.RIGHT);
         ipAddrLable.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
@@ -99,7 +104,7 @@ public class Client {
         frame.add(inputMessege);
         frame.add(inputButton);
         frame.add(palayerListLabel);
-        frame.add(listView);
+        frame.add(scrollView);
         frame.add(spelling);
         frame.add(ipAddrField);
         frame.add(ipAddrLable);
