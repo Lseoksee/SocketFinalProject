@@ -123,7 +123,7 @@ public class ConnectServer extends Client implements ActionListener, KeyListener
     public void actionPerformed(ActionEvent e) {
         try {
             if (e.getSource() == connetAddr && playerList.isEmpty()) {
-                Connect(ipAddrField.getText());
+                Connect(ipAddrField.getText().trim());
                 spelling.setText("이번순서가 입력할때 까지 대기...");
             } else if (e.getSource() == inputButton) {
                 checkLastSpell();
