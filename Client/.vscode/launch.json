@@ -9,7 +9,7 @@
             "name": "프로젝트 실행",
             "request": "launch",
             "mainClass": "com.seok.Client",
-            "projectName": "build"
+            "projectName": "SocketFinalCilent"
         },
         {
             "type": "java",
